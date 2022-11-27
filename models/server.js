@@ -41,21 +41,21 @@ class Server {
   // Middleware's
   Middlewares() {
     // CORS for everyone
-    // this.app.use(cors()) 
+    this.app.use(cors()) 
     //CORS for a specific origins
-    const whiteList = [process.env.ORIGIN1, process.env.ORIGIN2];
-    this.app.use(
-      cors({
-        origin: function (origin, callback) {
-          console.log("⚡ => ", origin);
-          if (!origin || whiteList.includes(origin)) {
-            return callback(null, origin);
-          }
-          return callback("Error CORS: " + origin + " - Not authorized.");
-        },
-        credentials: true /*Enable credentials on browser*/,
-      })
-    );
+    // const whiteList = [process.env.ORIGIN1, process.env.ORIGIN2];
+    // this.app.use(
+    //   cors({
+    //     origin: function (origin, callback) {
+    //       console.log("⚡ => ", origin);
+    //       if (!origin || whiteList.includes(origin)) {
+    //         return callback(null, origin);
+    //       }
+    //       return callback("Error CORS: " + origin + " - Not authorized.");
+    //     },
+    //     credentials: true /*Enable credentials on browser*/,
+    //   })
+    // );
 
     // Rate limit for blocking brute force attacks
     this.app.use(
