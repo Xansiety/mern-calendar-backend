@@ -3,7 +3,7 @@ import jsonwebtoken from "jsonwebtoken";
 
 export const generateToken = (uid = "") => {
   const payload = { uid };
-  const expiresIn = 60 * 15; //15 minutos
+  const expiresIn = "1h"; //1 hora
   try {
     const token = jsonwebtoken.sign(payload, process.env.SECRETORPRIVATEKEY, {
       expiresIn,
@@ -25,14 +25,14 @@ export const generateRefreshToken = (uid, res = response) => {
       {
         expiresIn,
       }
-    ); 
+    );
     // Guardar el token en la cookie del navegador
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.MODO === "developer" ? false : true,
       expires,
       sameSite: "none",
-    }); 
+    });
     return { refreshToken };
   } catch (error) {
     console.log(error);
