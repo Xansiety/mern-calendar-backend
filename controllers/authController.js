@@ -8,9 +8,9 @@ import {
 export const registerAction = async (req = request, res = response) => {
   const { nombre, email, password, rol } = req.body;
   try {
-    console.log({email});
+    console.log({ email });
     let usuario = await Usuario.findOne({ email });
- 
+
     // Custom error
     if (usuario !== null) throw { code: 11000 };
 
@@ -26,8 +26,10 @@ export const registerAction = async (req = request, res = response) => {
     return res.status(201).json({
       ok: true,
       msg: "Usuario creado correctamente.",
+      uid,
       token,
       expiresIn,
+      name: usuario.nombre,
     });
   } catch (error) {
     console.log(error);
@@ -88,6 +90,8 @@ export const loginAction = async (req = request, res = response) => {
       ok: true,
       token,
       expiresIn,
+      uid,
+      name: usuario.nombre,
     });
   } catch (error) {
     console.log(error);
@@ -158,4 +162,18 @@ export const refreshTokenAction = (req = request, res = response) => {
 export const logoutAction = (req = request, res = response) => {
   res.clearCookie("refreshToken"); // limpiamos la cookie
   res.json({ ok: true });
+};
+
+
+export const revalidarToken = async (req, res = response) => { 
+  const {  _id: uid, nombre } = req.usuario; 
+  // Generar JWT
+  const { token, expiresIn } = generateToken(uid);
+  res.status(200).json({
+    ok: true,
+    uid,
+    nombre,
+    token,
+    expiresIn,
+  });
 };
